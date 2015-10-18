@@ -54,8 +54,12 @@ public class MainActivity extends Activity {
 
                 // 日付の取得　年月日
                 Calendar cal = Calendar.getInstance();
-                String str = "" + cal.get(Calendar.YEAR) + (cal.get(Calendar.MONTH) + 1) + cal.get(Calendar.DATE);
-                int dat=Integer.parseInt(str);
+                String yearStr = "" + cal.get(Calendar.YEAR);
+                String monthStr = "" + cal.get(Calendar.MONTH);
+                String dayStr = "" + cal.get(Calendar.DATE);
+                int year = Integer.parseInt(yearStr);
+                int month = Integer.parseInt(monthStr);
+                int day = Integer.parseInt(dayStr);
                 //乱数の取得
                 //-3～3の乱数を取得する
                 Random rnd = new Random();
@@ -65,10 +69,12 @@ public class MainActivity extends Activity {
                 //DBに保存 ポジティブ度数、年月日
                     ContentValues values = new ContentValues();
                     values.put("Pozi", kekka);
-                    values.put("Date", dat);
+                    values.put("Year", year);
+                    values.put("Month", month);
+                    values.put("Day", day);
                     long ret;
                     try {
-                        ret = db.insert("token", null, values);
+                        ret = db.insert("negapozi", null, values);
                     } finally {
                         db.close();
                     }
@@ -76,10 +82,12 @@ public class MainActivity extends Activity {
                     //DBに保存 ネガティブ度数、年月日
                     ContentValues values = new ContentValues();
                     values.put("Nega", kekka * -1);
-                    values.put("Date", dat);
+                    values.put("Year", year);
+                    values.put("Month", month);
+                    values.put("Day", day);
                     long ret;
                     try {
-                        ret = db.insert("token", null, values);
+                        ret = db.insert("negapozi", null, values);
                     } finally {
                         db.close();
                     }

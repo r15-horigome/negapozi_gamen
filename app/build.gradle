@@ -27,4 +27,5 @@ dependencies {
     compile fileTree(include: '*.jar', dir: 'libs')
     compile files('libs/kuromoji-0.7.7.jar')
     compile files('libs/GraphView-4.0.1.jar')
+    compile files('libs/afreechart-0.0.4.jar')
 }

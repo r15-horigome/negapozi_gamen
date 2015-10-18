@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MyOpenHelper extends SQLiteOpenHelper {
 
     public MyOpenHelper(Context context) {
-        super(context, "guchiruna", null, 1);
+        super(context, "newguchiruna", null, 1);
     }
 
     @Override
@@ -18,11 +18,13 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         db.execSQL("create table article(" + "article text" + ");");
 
         //ネガポジ用のテーブル
-        db.execSQL("create table token(" +
+        db.execSQL("create table negapozi(" +
                 "id INTEGER PRIMARY KEY " +
                 ",Pozi REAR " +
                 ",Nega REAR " +
-                ",Date INTEGER " +
+                ",Year INTEGER " +
+                ",Month INTEGER " +
+                ",Day INTEGER " +
                 ");");
     }
 
