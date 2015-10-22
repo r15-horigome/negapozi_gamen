@@ -3,13 +3,17 @@ package xcat.daiyonkaigi.guchiruna.activity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -20,10 +24,14 @@ import xcat.daiyonkaigi.guchiruna.db.MyOpenHelper;
 
 public class MainActivity extends Activity {
 
+    RelativeLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        layout = (RelativeLayout)findViewById(R.id.relativelayout1);
 
         //DBの初期化処理
         MyOpenHelper helper = new MyOpenHelper(this);
@@ -32,26 +40,26 @@ public class MainActivity extends Activity {
         //テキスト及び関連する情報の内容を取得
         final EditText editText = (EditText) findViewById(R.id.editText);
 
-        //TODO 日付などの情報を取得
+
 
         //ボタン押下時の登録処理
         Button confirmButton = (Button)this.findViewById(R.id.button);
         confirmButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
+            public void onClick(View view) {
                 String article = editText.getText().toString();
-                // 初期化用
-                //db.delete( "token", null, null );
+                // テストデータ初期化用
+                db.delete( "negapozi", null, null );
                 //db.delete( "article", null, null );
                 //記事を格納
                 ContentValues articleInsertValues = new ContentValues();
                 articleInsertValues.put("article", article);
                 //TODO 日付を登録
                 long id = db.insert("article", "null", articleInsertValues);
+
                 /*
                  * ネガポジ機能テスト用
                  * ネガポジ用データをDBに登録
                  */
-
                 // 日付の取得　年月日
                 Calendar cal = Calendar.getInstance();
                 String yearStr = "" + cal.get(Calendar.YEAR);
@@ -60,40 +68,54 @@ public class MainActivity extends Activity {
                 int year = Integer.parseInt(yearStr);
                 int month = Integer.parseInt(monthStr);
                 int day = Integer.parseInt(dayStr);
-                //乱数の取得
-                //-3～3の乱数を取得する
-                Random rnd = new Random();
-                int kekka = rnd.nextInt(7) - 3;
-                if (kekka > 0)
-                {
-                //DBに保存 ポジティブ度数、年月日
-                    ContentValues values = new ContentValues();
-                    values.put("Pozi", kekka);
-                    values.put("Year", year);
-                    values.put("Month", month);
-                    values.put("Day", day);
-                    long ret;
-                    try {
-                        ret = db.insert("negapozi", null, values);
-                    } finally {
-                        db.close();
+
+                /*
+                 *  テストデータ作成用
+                 *  乱数でネガポジ度数を出して、DBに登録してます。
+                 *  奥村さんの開発が完了したらマージする。
+                 *
+                 * */
+                int max = 0;
+                Random rnd;
+                int kekka = 0;
+                long ret;
+                Log.e("test","テストデータ作成開始");
+                try {
+                    while (max < 31) {
+                        Log.e("test",max+"回目");
+                        //乱数の取得
+                        //-3～3の乱数を取得する
+                        rnd = new Random();
+                        kekka = rnd.nextInt(7) - 3;
+                        if (kekka > 0) {
+                            Log.e("test",kekka+"POZI乱数");
+                            //DBに保存 ポジティブ度数、年月日
+                            ContentValues values = new ContentValues();
+                            values.put("Pozi", kekka);
+                            values.put("Year", year);
+                            values.put("Month", month);
+                            values.put("Day", max+1);
+                            ret = db.insert("negapozi", null, values);
+                            Log.e("test",ret+"行目作成");
+                        } else {
+                            Log.e("test",kekka+"NEGA乱数");
+                            //DBに保存 ネガティブ度数、年月日
+                            ContentValues values = new ContentValues();
+                            values.put("Nega", kekka * -1);
+                            values.put("Year", year);
+                            values.put("Month", month);
+                            values.put("Day", max+1);
+                            ret = db.insert("negapozi", null, values);
+                            Log.e("test",ret+"行目作成");
+                        }
+                        max++;
+                        day++;
                     }
-                }else {
-                    //DBに保存 ネガティブ度数、年月日
-                    ContentValues values = new ContentValues();
-                    values.put("Nega", kekka * -1);
-                    values.put("Year", year);
-                    values.put("Month", month);
-                    values.put("Day", day);
-                    long ret;
-                    try {
-                        ret = db.insert("negapozi", null, values);
-                    } finally {
-                        db.close();
-                    }
+                }finally {
+                    db.close();
                 }
-                 //次画面での表示処理
-                Intent dbIntent = new Intent(MainActivity.this,ShowDataBase.class);
+                //次画面での表示処理
+                Intent dbIntent = new Intent(MainActivity.this, ShowDataBase.class);
                 startActivity(dbIntent);
             }
         });
@@ -118,7 +140,6 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

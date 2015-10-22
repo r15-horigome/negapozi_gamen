@@ -24,7 +24,7 @@ public class ChartView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         chartArea.setWidth(w);
-        chartArea.setHeight(h/2);
+        chartArea.setHeight(h);
     }
 
     @Override

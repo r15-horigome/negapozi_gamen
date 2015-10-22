@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Guchiruna-master.iml" filepath="$PROJECT_DIR$/Guchiruna-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/negapozi_gamen-master.iml" filepath="$PROJECT_DIR$/negapozi_gamen-master.iml" />
     </modules>
   </component>
 </project>
