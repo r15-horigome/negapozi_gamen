@@ -3,7 +3,6 @@ package xcat.daiyonkaigi.guchiruna.activity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -115,7 +113,7 @@ public class MainActivity extends Activity {
                     db.close();
                 }
                 //次画面での表示処理
-                Intent dbIntent = new Intent(MainActivity.this, ShowDataBase.class);
+                Intent dbIntent = new Intent(MainActivity.this, NegapoziActivity.class);
                 startActivity(dbIntent);
             }
         });
